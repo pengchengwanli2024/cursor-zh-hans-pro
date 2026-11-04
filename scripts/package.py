@@ -36,7 +36,7 @@ content_types = '<?xml version="1.0"?><Types xmlns="http://schemas.openxmlformat
 with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED) as archive:
     archive.writestr('extension.vsixmanifest', ET.tostring(manifest, encoding='utf-8', xml_declaration=True))
     archive.writestr('[Content_Types].xml', content_types)
-    for name in ['package.json', 'engine.js', 'extension.js', 'runtime.js', 'dictionary.json', 'README.md', 'LICENSE', 'THIRD-PARTY-NOTICES.md','localization-build.json']:
+    for name in ['package.json', 'engine.js', 'extension.js', 'runtime.js', 'dictionary.json', 'README.md','CONTRIBUTING.md','CHANGELOG.md', 'LICENSE', 'THIRD-PARTY-NOTICES.md','localization-build.json']:
         archive.write(root / name, 'extension/' + name)
     for directory in ['translations','LICENSES']:
         for file in sorted((root / directory).rglob('*')):

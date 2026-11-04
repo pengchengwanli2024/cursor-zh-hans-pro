@@ -1,0 +1,10 @@
+node_modules/
+releases/
+verification/
+.harness2/
+.harness2-preflight/
+.DS_Store
+*.backup
+*.orig.bak
+*.log
+*.vsix

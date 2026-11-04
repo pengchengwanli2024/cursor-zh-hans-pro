@@ -9,12 +9,12 @@ Community Simplified Chinese UI extension for Cursor. Includes an MIT-licensed b
 从 [Releases](https://github.com/pengchengwanli2024/cursor-zh-hans-pro/releases) 下载 VSIX，在 Cursor 命令面板运行 **Extensions: Install from VSIX…**，或使用：
 
 ```sh
-cursor --install-extension cursor-zh-hans-pro-1.2.0.vsix
+cursor --install-extension cursor-zh-hans-pro-1.2.1.vsix
 ```
 
 本插件已包含基础中文资源。请卸载其他简体中文语言包，避免同一语言存在多个提供者，造成重启后翻译来源不一致。
 
-在命令面板运行 **Configure Display Language**，选择 **中文（简体）/ zh-cn**。在编辑器模式启动本插件，执行 **Cursor 中文：立即修复界面汉化**，按提示重新加载；完整退出并重新打开可让所有窗口生效。
+在命令面板运行 **Configure Display Language**，选择 **中文（简体）/ zh-cn**。在编辑器模式启动本插件，执行 **Cursor 中文：立即修复界面汉化**，按提示完整退出并重新打开 Cursor。当前构建会缓存工作台资源，单独重载窗口可能继续使用旧资源。
 
 ## 当前覆盖
 
@@ -29,7 +29,7 @@ cursor --install-extension cursor-zh-hans-pro-1.2.0.vsix
 
 `cursorZh.autoApply` 默认开启。**自动修复由编辑器模式的扩展启动触发。** 当前 Cursor 独立智能体窗口只启动其指定扩展，因此仅打开独立智能体窗口时，本插件不会自行启动；需要在编辑器模式启动一次，或手动执行修复命令。已应用的翻译资源可以在独立智能体窗口生效。
 
-插件会检测当前安装资源是否被软件升级覆盖，并从当前版本资源生成补丁。需要重新加载时会提醒，不强制重启或停止正在工作的智能体。启动结构不再兼容时停止修改并报告原因。未来版本的词条和结构适配需要更新插件；本项目不承诺任意未来版本始终完整中文。
+插件会检测当前安装资源是否被软件升级覆盖，并从当前版本资源生成补丁。需要完整重启时会提醒，不强制重启或停止正在工作的智能体。启动结构不再兼容时停止修改并报告原因。未来版本的词条和结构适配需要更新插件；本项目不承诺任意未来版本始终完整中文。
 
 本地 VSIX 不会自行从 GitHub 下载更新。新版本通过 Releases 发布，按需安装。
 

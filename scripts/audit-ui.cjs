@@ -26,23 +26,24 @@ async function inspect(page, allowed) {
   return page.evaluate(allowedValues => {
     const allowed = new Set(allowedValues);
     const skip = 'script,style,code,pre,textarea,input,[contenteditable=true],.monaco-editor,.xterm,.ui-markdown,.markdown-body,.composer-human-message-content,.human-message-inline-body';
-    const english = new Set(), attributes = new Set(), navigation = new Set();
+    const english = new Set(), attributes = new Set(), navigation = new Set(), preserved = new Set();
+    const technical = new Set(['IDE','Cursor','main','GitHub','Git','SSH','WSL','HTTP/2','Ara','Pro+','Ultra','px','return','const','result']);
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     let node;
     while ((node = walker.nextNode())) {
       const text = node.nodeValue.trim(), parent = node.parentElement;
       if (!allowed.has(text) || !parent || parent.closest(skip) || !parent.checkVisibility()) continue;
       if (parent.closest('nav') && text.length < 70) navigation.add(text);
-      if (/^[A-Za-z]/.test(text) && !/[\u4e00-\u9fff]/.test(text)) english.add(text);
+      if (/^[A-Za-z]/.test(text) && !/[\u4e00-\u9fff]/.test(text)) (technical.has(text)?preserved:english).add(text);
     }
     for (const el of document.querySelectorAll('[title],[aria-label],[placeholder]')) {
       if (!el.checkVisibility() || el.closest(skip)) continue;
       for (const key of ['title','aria-label','placeholder']) {
         const value = (el.getAttribute(key) || '').trim();
-        if (allowed.has(value) && /^[A-Za-z]/.test(value) && !/[\u4e00-\u9fff]/.test(value)) attributes.add(value);
+        if (allowed.has(value) && /^[A-Za-z]/.test(value) && !/[\u4e00-\u9fff]/.test(value)) (technical.has(value)?preserved:attributes).add(value);
       }
     }
-    return {navigation:[...navigation], english:[...english], attributes:[...attributes], revision:window.__cursorZhRevision || null};
+    return {navigation:[...navigation], english:[...english], attributes:[...attributes], preservedEnglish:[...preserved], revision:window.__cursorZhRevision || null};
   }, allowed);
 }
 
@@ -61,14 +62,28 @@ async function main() {
     }
     await page.waitForTimeout(250);
     const initial=await inspect(page,allowed);
-    if (process.argv.includes('--all-settings')) {
+    if (process.argv.includes('--all-customize')) {
+      const customize=page.getByText('自定义',{exact:true});
+      if(await customize.count()!==1)throw Error('Open the Agents window before auditing Customize.');
+      await customize.click();await page.waitForTimeout(200);
       const results=[];
-      for(const label of initial.navigation.filter(x=>!['返回','官方文档'].includes(x))) {
+      for(const label of ['插件','MCP 外部工具服务','技能','子智能体','规则','命令','钩子']) {
+        const target=page.getByRole('button',{name:label,exact:true});
+        if(await target.count()!==1)throw Error('Unrecognized Customize navigation: '+label);
+        await target.click();await page.waitForTimeout(220);
+        const result=await inspect(page,allowed);
+        results.push({page:label,english:result.english,attributes:result.attributes,preservedEnglish:result.preservedEnglish});
+      }
+      console.log(JSON.stringify(results,null,2));
+    } else if (process.argv.includes('--all-settings')) {
+      const results=[];
+      const categories=new Set(['通用','外观','套餐与用量','智能体','云端智能体','模型','语音','源代码管理','浏览器与网络','代码智能','测试功能']);
+      for(const label of initial.navigation.filter(x=>categories.has(x))) {
         const target=page.locator('nav').getByText(label,{exact:true}).first();
         await target.click();
         await page.waitForTimeout(220);
         const result=await inspect(page,allowed);
-        results.push({page:label,english:result.english,attributes:result.attributes});
+        results.push({page:label,english:result.english,attributes:result.attributes,preservedEnglish:result.preservedEnglish});
       }
       console.log(JSON.stringify(results,null,2));
     } else console.log(JSON.stringify(initial,null,2));

@@ -17,8 +17,8 @@ function activate(context) {
         return;
       }
       if (result.status === 'applied') {
-        const choice = await vscode.window.showInformationMessage('中文界面已补齐（也已备份原始资源）。重新加载当前窗口后生效。', '重新加载界面');
-        if (choice) vscode.commands.executeCommand('workbench.action.reloadWindow');
+        const choice = await vscode.window.showInformationMessage('中文界面资源已更新并备份。请完整退出并重新打开 Cursor；单独重载窗口可能继续使用旧资源。', '查看重启说明');
+        if (choice) vscode.commands.executeCommand('cursor-zh-hans-pro.showGuide');
       } else if (manual) vscode.window.showInformationMessage('中文资源已是当前版本，无需再次修复。');
     } catch (error) {
       output.appendLine('修复未完成：' + error.message);
@@ -41,8 +41,8 @@ function activate(context) {
       await settings().update('enabled', false, vscode.ConfigurationTarget.Global);
       const result = engine.restore(root, state);
       output.appendLine(JSON.stringify(result));
-      const reload = await vscode.window.showInformationMessage(result.status === 'busy' ? '另一个窗口正在修改，请稍后重试恢复。' : '已恢复当前版本的原始界面资源。', '重新加载界面');
-      if (reload) vscode.commands.executeCommand('workbench.action.reloadWindow');
+      const guide = await vscode.window.showInformationMessage(result.status === 'busy' ? '另一个窗口正在修改，请稍后重试恢复。' : '已恢复当前版本的原始界面资源。请完整退出并重新打开 Cursor。', '查看说明');
+      if (guide) vscode.commands.executeCommand('cursor-zh-hans-pro.showGuide');
     } catch (error) { vscode.window.showErrorMessage('恢复未完成：' + error.message); }
   });
   if (settings().get('enabled', true) && settings().get('autoApply', true)) void report();

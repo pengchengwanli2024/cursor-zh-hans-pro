@@ -19,7 +19,7 @@ metadata = child(manifest, 'Metadata')
 child(metadata, 'Identity', {'Language': 'en-US', 'Id': package['name'], 'Version': package['version'], 'Publisher': package['publisher']})
 child(metadata, 'DisplayName', text=package['displayName'])
 child(metadata, 'Description', text=package['description'])
-child(metadata, 'Categories', text='Other')
+child(metadata, 'Categories', text=','.join(package.get('categories', ['Other'])))
 properties = child(metadata, 'Properties')
 for key, value in {'Engine': package['engines']['vscode'], 'ExtensionKind': 'ui', 'LocalizedLanguages':'Chinese (Simplified)'}.items():
     child(properties, 'Property', {'Id': 'Microsoft.VisualStudio.Code.' + key, 'Value': value})

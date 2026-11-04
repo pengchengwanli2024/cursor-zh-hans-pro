@@ -11,3 +11,5 @@
 原生语言键使用 `translations/main.i18n.json`。维护者在本机有 Cursor 和 Microsoft 基础中文包时，可显式传入两者路径运行 `scripts/build-languagepack.py` 重新对齐；此过程只读取语言键和翻译数据。不要提交原始应用 JS、应用备份、个人配置或未经清理的运行日志。
 
 `scripts/audit-ui.cjs` 是可选的本机 DOM 核查工具，需要自行明确开启仅监听回环地址的调试接口；不提供截图或采集对话。它只报告与应用静态界面词条匹配的文字，不代表所有页面均已验收。核查完成后应正常退出并以常规方式重新打开 Cursor。
+
+命令行升级后若显示语言列表仍使用旧缓存，先运行 Configure Display Language 重新选择 zh-cn。维护者也可显式运行 `node scripts/register-local-languagepack.cjs EXTENSIONS_DIR USER_DATA_DIR`，按原生格式重建已安装语言包的数据缓存；脚本保留原缓存备份，并校验翻译文件位于所属扩展内。

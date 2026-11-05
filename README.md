@@ -9,7 +9,7 @@ Community Simplified Chinese UI extension for Cursor. Includes an MIT-licensed b
 从 [Releases](https://github.com/pengchengwanli2024/cursor-zh-hans-pro/releases) 下载 VSIX，在 Cursor 命令面板运行 **Extensions: Install from VSIX…**，或使用：
 
 ```sh
-cursor --install-extension cursor-zh-hans-pro-1.2.1.vsix
+cursor --install-extension cursor-zh-hans-pro-1.2.2.vsix
 ```
 
 本插件已包含基础中文资源。请卸载其他简体中文语言包，避免同一语言存在多个提供者，造成重启后翻译来源不一致。

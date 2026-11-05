@@ -12650,5 +12650,6 @@
   "Imported {0} theme from the IDE.": "已从 IDE 导入 {0} 个主题。",
   "Imported {0} themes from the IDE.": "已从 IDE 导入 {0} 个主题。",
   "Failed to import {0} editor theme.": "导入 {0} 个编辑器主题失败。",
-  "Failed to import {0} editor themes.": "导入 {0} 个编辑器主题失败。"
+  "Failed to import {0} editor themes.": "导入 {0} 个编辑器主题失败。",
+  "Completed": "已完成"
 }

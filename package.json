@@ -3,7 +3,7 @@
   "displayName": "Cursor 简体中文深度增强包",
   "description": "补充 Cursor AI、智能体窗口和设置界面中文；启动检测、升级后自动修复、按版本备份和恢复。",
   "publisher": "cursor-zh",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "engines": {
     "vscode": "^1.80.0"
   },

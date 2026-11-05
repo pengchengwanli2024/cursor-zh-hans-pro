@@ -79,7 +79,9 @@ async function main() {
       const results=[];
       const categories=new Set(['通用','外观','套餐与用量','智能体','云端智能体','模型','语音','源代码管理','浏览器与网络','代码智能','测试功能']);
       for(const label of initial.navigation.filter(x=>categories.has(x))) {
-        const target=page.locator('nav').getByText(label,{exact:true}).first();
+        const close=page.getByRole('button',{name:/^(Close Settings|关闭设置)$/});
+        if(await close.count()===0){await page.getByRole('button',{name:/^(设置|Settings)$/}).click();await close.waitFor();}
+        const target=page.locator('nav .ui-sidebar-menu-button:visible').filter({hasText:new RegExp('^'+label+'$')}).first();
         await target.click();
         await page.waitForTimeout(220);
         const result=await inspect(page,allowed);
